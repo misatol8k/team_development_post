@@ -41,6 +41,7 @@ class TeamsController < ApplicationController
   def transfer
     if @team.update(team_params)
       user = User.find(params[:owner_id])
+      AssignMailer.transfer_mail(user.email, @team.name).deliver
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :show
