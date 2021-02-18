@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[show edit update destroy]
+  before_action :set_team, only: %i[show edit update transfer destroy]
 
   def index
     @teams = Team.all
@@ -35,6 +35,15 @@ class TeamsController < ApplicationController
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :edit
+    end
+  end
+
+  def transfer
+    if @team.update(team_params)
+      user = User.find(params[:owner_id])
+    else
+      flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
+      render :show
     end
   end
 
