@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[show edit update destroy]
+  before_action :set_team, only: %i[show edit update transfer destroy]
 
   def index
     @teams = Team.all
@@ -35,6 +35,16 @@ class TeamsController < ApplicationController
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :edit
+    end
+  end
+
+  def transfer
+    if @team.update(team_params)
+      AssignMailer.transfer_mail(@team.owner.email, @team.name).deliver
+      redirect_to @team, notice: I18n.t('views.messages.nominated_a_leader')
+    else
+      flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
+      render :show
     end
   end
 
