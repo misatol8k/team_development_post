@@ -36,7 +36,7 @@
                 <%= agenda.title %>
                 <i class="right fa fa-angle-left"></i>
                 <% if current_user.id == agenda.user_id || current_user.id == agenda.team.owner_id %>
-                  <%= link_to 'Destroy', agenda, method: :delete, data: { confirm: 'Are you sure?' } ,class: 'btn btn-sm btn-danger' %>
+                  <%= link_to 'Destroy', agenda_path(id: agenda.id), method: :delete, data: { confirm: 'Are you sure?' } ,class: 'btn btn-sm btn-danger' %>
                 <% end %>
               </div>
             </div>
