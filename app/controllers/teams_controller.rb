@@ -40,9 +40,8 @@ class TeamsController < ApplicationController
 
   def transfer
     if @team.update(team_params)
-      user = User.find(params[:owner_id])
-      AssignMailer.transfer_mail(user.email, @team.name).deliver
       redirect_to @team, notice: I18n.t('views.messages.transfer_the_leader')
+      AssignMailer.transfer_mail(@team.owner.email, @team.name).deliver
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :show
@@ -57,7 +56,6 @@ class TeamsController < ApplicationController
   def dashboard
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
   end
-
   private
 
   def set_team
