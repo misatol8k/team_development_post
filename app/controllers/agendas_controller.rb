@@ -27,6 +27,7 @@ class AgendasController < ApplicationController
     if current_user.id == @agenda.user_id || current_user.id == @agenda.team.owner_id
       AssignMailer.agenda_destroy_mail(@team.members.pluck(:email), @agenda.title).deliver
       @agenda.destroy
+      redirect_to dashboard_url, notice: I18n.t('views.messages.delete_agenda')
     end
   end
 
