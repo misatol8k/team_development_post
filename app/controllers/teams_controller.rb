@@ -40,8 +40,8 @@ class TeamsController < ApplicationController
 
   def transfer
     if @team.update(team_params)
-      redirect_to @team, notice: I18n.t('views.messages.transfer_the_leader')
       AssignMailer.transfer_mail(@team.owner.email, @team.name).deliver
+      redirect_to @team, notice: I18n.t('views.messages.nominated_a_leader')
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :show
