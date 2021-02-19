@@ -15,7 +15,11 @@ class TeamsController < ApplicationController
     @team = Team.new
   end
 
-  def edit; end
+  def edit
+    if @team.owner != current_user
+      render:show
+    end
+  end
 
   def create
     @team = Team.new(team_params)
