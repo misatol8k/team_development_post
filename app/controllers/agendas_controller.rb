@@ -27,12 +27,6 @@ class AgendasController < ApplicationController
     if current_user.id == @agenda.user_id || current_user.id == @agenda.team.owner_id
       AssignMailer.agenda_destroy_mail(@team.members.pluck(:email), @agenda.title).deliver
       @agenda.destroy
-      puts 'destroyしました'
-      # Agendaが削除されると、そのAgendaに紐づいているTeamに所属しているユーザー全員に通知メールが飛ぶ
-      # メールのインスタンス作成(Agenda.Team.所属ユーザー チーム削除メール) notice: 削除しましたメッセージ
-      redirect_to dashboard_url, notice: '削除しましたメッセージ'
-    else
-      puts 'destroyできませんでした'
     end
   end
 
